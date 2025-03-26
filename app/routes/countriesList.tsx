@@ -4,15 +4,17 @@ import Lists from "~/components/Lists";
 import React from "react";
 import { Divider } from "@mui/material";
 
-interface Country {
+export interface Country {
   name: {
     common: string;
+    official: string;
   };
   population: number;
   region: string;
   flags: {
     svg: string;
   };
+  capital: string[];
 }
 
 export async function clientLoader() {
