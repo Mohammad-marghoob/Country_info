@@ -1,5 +1,8 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/countriesList";
+import Lists from "~/components/Lists";
+import React from "react";
+import { Divider } from "@mui/material";
 
 interface Country {
   name: {
@@ -7,6 +10,9 @@ interface Country {
   };
   population: number;
   region: string;
+  flags: {
+    svg: string;
+  };
 }
 
 export async function clientLoader() {
@@ -19,17 +25,27 @@ export default function CountriesList({ loaderData }: Route.ComponentProps) {
   if (!loaderData) return;
 
   return (
-    <ul>
-      {loaderData.map((country: Country, key: number) => (
-        <>
-          <Link key={key} to={`/countries/${country.name.common}`}>
-            <li>{country.name.common}</li>
-          </Link>
-          <div>
-            Region: {country.region} | Population: {country.population}
-          </div>
-        </>
-      ))}
-    </ul>
+    <>
+      <div className="px-2">
+        <h2 className="text-3xl font-bold"> Countries </h2>
+      </div>
+
+      <ul>
+        {loaderData.map((country: Country, key: number) => (
+          <React.Fragment key={key}>
+            <Link to={`/countries/${country.name.common}`}>
+              <Lists
+                countryName={country.name.common}
+                flag={country.flags.svg}
+              />
+            </Link>
+            <div className="px-8">
+              Region: {country.region} | Population: {country.population}
+            </div>
+            <Divider />
+          </React.Fragment>
+        ))}
+      </ul>
+    </>
   );
 }
